@@ -25,6 +25,13 @@ class UserView(APIView):
             return Response({"message": "가입완료!"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"message":f"${serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        if request.user == user:
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response("권한이없습니다.", status=status.HTTP_403_FORBIDDEN)    
         
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -37,8 +44,17 @@ class mockView(APIView):
         user.is_admin = True
         user.save()
         return Response("get 요청")
-    
-    
+
+# 실험중인 회원탈퇴 기능 
+# class UserDetailView(APIView):    
+        
+#     def delete(self, request, user_id):
+#         user = get_object_or_404(User, id=user_id)
+#         if request.user == user.user:
+#             user.delete()
+#             return Response(status=status.HTTP_204_NO_CONTENT)
+#         else:
+#             return Response("권한이없습니다.", status=status.HTTP_403_FORBIDDEN)    
     
 # 팔로우 기능
 class Followview(APIView):
