@@ -104,8 +104,8 @@ class LikeView(APIView):
         article = get_object_or_404(Article, id=article_id)
         if request.user in article.likes.all(): # 좋아요 한번더 누르면 제거기능 넣기
             article.likes.remove(request.user)
-            return Response("팔로우를 취소하였습니다.", status=status.HTTP_200_OK)
+            return Response("좋아요를 취소하였습니다.", status=status.HTTP_200_OK)
         else:
             article.likes.add(request.user)
-            return Response("팔로우했습니다.", status=status.HTTP_200_OK)
+            return Response("좋아요했습니다.", status=status.HTTP_200_OK)
         
