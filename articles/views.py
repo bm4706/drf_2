@@ -52,7 +52,12 @@ class ArticleDetailView(APIView):
     
     def delete(self, request, article_id):
         article = get_object_or_404(Article, id=article_id)
-        pass
+        if request.user == article.user:
+            article.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response("권한이없습니다.", status=status.HTTP_403_FORBIDDEN)
+ 
     
     
 class CommentView(APIView):
