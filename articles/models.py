@@ -13,3 +13,15 @@ class Article(models.Model):
     
     def __str__(self):
         return str(self.title)
+    
+    
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE) 
+    # 글이 삭제되면 글에 작성된 댓글도 사라지게 해야하므로 추가
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return str(self.content)

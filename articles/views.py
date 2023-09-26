@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 
 from articles.models import Article
-from articles.serializers import ArticleCreateSerializer, ArticleSerializer, ArticleListSerializer
+from articles.serializers import ArticleCreateSerializer, ArticleSerializer, ArticleListSerializer, CommentSerializer, CommentCreateSerializer
 
 from rest_framework.generics import get_object_or_404
 
@@ -61,20 +61,30 @@ class ArticleDetailView(APIView):
     
     
 class CommentView(APIView):
-    def get(self, request):
-        pass
+    def get(self, request, article_id):
+        article = Article.objects.get(id=article_id)
+        comments = article.comment_set.all()
+        # 역참조인 set는 models.py에 따로 relatedname을 붙이지 않아도 자동으로 등록되어잇다.
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
     
-    def post(self, request):
-        pass
+    def post(self, request, article_id): # 댓글 생성 기능
+        serializer = CommentCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user, article_id=article_id )
+            return Response(serializer.data, status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
 class CommentDetailView(APIView):    
-    def put(self, request):
+    def put(self, request, article_id):
         pass
     
-    def delete(self, request):
+    def delete(self, request, article_id):
         pass
     
 class LikeView(APIView):
-    def post(self, request):
+    def post(self, request, article_id):
         pass
