@@ -2,9 +2,18 @@ from rest_framework import serializers
 from users.models import User
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from articles.serializers import ArticleListSerializer
 
-
-
+class UserProfileSerializer(serializers.ModelSerializer):
+    followers =serializers.StringRelatedField(many=True) # 이러면 email로 누가 팔로우했는지 보여줌
+    # followers =serializers.PrimaryKeyRelatedField(many=True, read_only=True) # 이거는 email이 아니라 userid를 보여줌
+    followings =serializers.StringRelatedField(many=True)
+    article_set = ArticleListSerializer(many=True)
+    like_articles = ArticleListSerializer(many=True)
+    class Meta:
+        model = User
+        # fields = "__all__"
+        fields = ("id","email","followings", "followers", "article_set", "like_articles")
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

@@ -44,7 +44,8 @@ class User(AbstractBaseUser):
     # 팔로잉 기능
     # 나도 여러명한테하고 여러명이 나한테도 하니까 manytomany
     # symmertrical 이 트루면 팔로잉하면 상대방도 팔로잉됨(싸이월드 일촌?), 아니면 인스타처럼 나만 팔로잉하거나 상대만 팔로잉하거나
-    followings = models.ManyToManyField('self', symmetrical=False, related_name="followers")
+    # blank 넣어줘야함 0일수도있으므로
+    followings = models.ManyToManyField('self', symmetrical=False, related_name="followers", blank=True)
     
     
     
