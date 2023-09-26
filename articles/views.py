@@ -12,6 +12,10 @@ from articles.serializers import ArticleCreateSerializer, ArticleSerializer, Art
 
 from rest_framework.generics import get_object_or_404
 
+from django.db.models.query_utils import Q
+
+
+
 class ArticleView(APIView):
     def get(self, request):
         artices = Article.objects.all()
@@ -27,6 +31,26 @@ class ArticleView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+# 팔로우 한사람 글 보기
+
+class FeedView(APIView):
+    permission_classes = [permissions.IsAuthenticated] # 로그인한 사람만 보도록
+    def get(self, request):
+        q = Q()
+        for user in request.user.followings.all(): # 로그인한 유저의 팔로우한 사람의 모든것
+            q.add(Q(user=user),q.OR)
+        feeds = Article.objects.filter(q)
+        serializer = ArticleListSerializer(feeds, many=True)
+        return Response(serializer.data)
+
+
+
+
+
+
+
+
+
     
 
 class ArticleDetailView(APIView):
