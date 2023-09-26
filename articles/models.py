@@ -10,6 +10,7 @@ class Article(models.Model):
     image = models.ImageField(blank=True, upload_to='%Y/%m/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    likes = models.ManyToManyField(User, related_name="like_articles") # 좋아요 기능! 은 many를 써야하고 related도 써야한다
     
     def __str__(self):
         return str(self.title)
