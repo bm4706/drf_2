@@ -25,7 +25,7 @@ class UserView(APIView):
             return Response({"message": "가입완료!"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"message":f"${serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST)
-    def delete(self, request, user_id):
+    def delete(self, request, user_id): # 회원탈퇴 기능 여기다가 넣음
         user = get_object_or_404(User, id=user_id)
         if request.user == user:
             user.delete()

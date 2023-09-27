@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
             password=password,
             # date_of_birth=date_of_birth,
         )
-        user.is_admin = True
+        user.is_admin = True # admin 유저여부
         user.save(using=self._db)
         return user
 
@@ -55,7 +55,7 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "email" # 로그인할때 어떤것을 사용할지
     # REQUIRED_FIELDS = ["date_of_birth"]
     REQUIRED_FIELDS = []
 

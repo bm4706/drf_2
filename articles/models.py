@@ -8,8 +8,8 @@ class Article(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
     image = models.ImageField(blank=True, upload_to='%Y/%m/')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True) # 생성할때만 갱신
+    updated_at = models.DateTimeField(auto_now=True) # 세이브할때마다 갱신
     likes = models.ManyToManyField(User, related_name="like_articles") # 좋아요 기능! 은 many를 써야하고 related도 써야한다
     
     def __str__(self):
